@@ -38,7 +38,6 @@ class WordPress_ShareASale {
         'db_version'          => '0.0.1',
         'tabs'                => array(
             'shareasale_settings' => 'Settings',
-            'shareasale_reports'  => 'Reports',
         ),
     );
 
@@ -137,6 +136,7 @@ class WordPress_ShareASale {
      * @link http://codex.wordpress.org/Plugin_API/Action_Reference
      */
     private function _actions() {
+    	add_action( 'init', array( &$this, 'init' ) );
         if ( is_plugin_active_for_network( plugin_basename( SHAREASALE_PLUGIN ) ) ) {
             add_action( 'network_admin_menu', array( &$this, 'admin_menu' ) );
             add_action( 'network_admin_edit_shareasale', array( &$this, 'update_network_setting' ) );
@@ -146,6 +146,31 @@ class WordPress_ShareASale {
         add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ) );
         add_action( 'admin_enqueue_scripts', array( &$this, 'admin_enqueue_scripts' ) );
     }
+
+    /**
+	 * Uses init.
+	 *
+	 * Adds WordPress actions using the plugin API.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @link http://codex.wordpress.org/Plugin_API/Action_Reference/init
+	 *
+	 * @return void
+	 */
+	public function init() {
+		// Check is logging spam is enabled, if so add the Spammer Log page.
+		if (
+			isset( $this->settings['shareasale_settings']['affiliate_id'] ) &&
+			$this->settings['shareasale_settings']['affiliate_id'] &&
+			isset( $this->settings['shareasale_settings']['api_token'] ) &&
+			$this->settings['shareasale_settings']['api_token'] &&
+			isset( $this->settings['shareasale_settings']['secret_key'] ) &&
+			$this->settings['shareasale_settings']['secret_key']
+		) {
+			$this->settings['tabs']['shareasale_reports'] = 'Reports';
+		}
+	}
 
     /**
      * WordPress filters.
@@ -634,7 +659,15 @@ class WordPress_ShareASale {
           case 'shareasale_reports':
             $token_count = $this->shareasale_api( array( 'action' => 'apitokencount' ) );
 
-            require_once( SHAREASALE_ROOT . 'inc/reports.tpl.php' );
+            if ( isset( $token_count['error'] ) ) {
+            	?>
+            	<div class="plugin__msg plugin__msg--error">
+            		<b><?php echo __( 'API Error:', 'shareasale' ); ?> <?php echo $token_count['error']; ?></b>
+            	</div>
+            	<?
+            } else {
+            	require_once( SHAREASALE_ROOT . 'inc/reports.tpl.php' );
+            }
           break;
         }
         ?>
@@ -661,24 +694,26 @@ class WordPress_ShareASale {
     $api_version    = 1.8;
     $action         = isset( $args['action'] ) ? $args['action'] : 'traffic';
     $url            = "https://shareasale.com/x.cfm?affiliateId=$affiliate_id&token=$api_token&version=$api_version&action=$action&XMLFormat=1";
+    $cache_string   = $action;
 
     switch ( $action ) {
       case 'traffic':
       case 'activity':
-        $date_start = isset( $args['date_start'] ) ? $args['date_start'] : date( 'm/d/Y', strtotime( date( 'm/1/Y' ) ) );
-        $date_end = isset( $args['date_end'] ) ? $args['date_end'] : date( 'm/d/Y', strtotime( date( 'm/' . date( 't' ) . '/Y' ) ) );
+        $date_start   = isset( $args['date_start'] ) ? $args['date_start'] : date( 'm/d/Y', strtotime( date( 'm/1/Y' ) ) );
+        $date_end     = isset( $args['date_end'] ) ? $args['date_end'] : date( 'm/d/Y', strtotime( date( 'm/' . date( 't' ) . '/Y' ) ) );
+        $cache_string .= '-' . strtotime( $date_start ) . '-' . strtotime( $date_end );
 
         $url .= "&dateStart=$date_start&dateEnd=$date_end";
       break;
       case 'paymentSummary':
         // @todo - Can't seem to get this one to work.
         $payment_date = isset( $args['payment_date'] ) ? $args['payment_date'] : date( 'm/d/Y', strtotime( 'now -1 day' ) );
+        $cache_string .= '-' . strtotime( $date_start ) . '-' . strtotime( $payment_date );
 
         $url .= "&paymentDate=$payment_date";
       break;
     }
 
-    $cache_string = $action . '-' . serialize( $args );
     $cache = new CacheBlocks( SHAREASALE_ROOT . '/cache/', $this->settings['shareasale_settings']['cache_time'] );
     if( ! $result = $cache->Load( $cache_string ) ) {
 
@@ -702,7 +737,7 @@ class WordPress_ShareASale {
             // Parse HTTP Body to determine result of request.
             if ( stripos( $result, 'Error Code ' ) ) {
                 // Error occurred
-                trigger_error( $result, E_USER_ERROR );
+                return array( 'error' => $result );
             }
             else {
                 // Success
@@ -711,7 +746,7 @@ class WordPress_ShareASale {
         }
         else {
             // Connection error
-            trigger_error( curl_error( $ch ),E_USER_ERROR );
+            return array( 'error' => $result );
         }
 
         curl_close($ch);

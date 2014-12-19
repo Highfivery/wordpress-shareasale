@@ -69,6 +69,10 @@ $border-color: #e8edf1;
   background: $primary-color;
 }
 
+.plugin__msg--error {
+  background: #9e0000;
+}
+
 .plugin__row-highlight {
   background: lighten($border-color, 5%);
 }
@@ -272,6 +276,16 @@ $border-color: #e8edf1;
 
 }
 
+.plugin__table__subhead {
+	th {
+		background: #f0f0f0;
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-weight: normal;
+		text-transform: none;
+	}
+}
+
 .plugin__fright {
   float: right;
 }
@@ -344,6 +358,8 @@ $border-color: #e8edf1;
   display: inline-block;
   float: left;
   width: 25%;
+  box-sizing: border-box;
+  padding: 10px 10px 10px 0;
 
   h3 {
     margin: 0 0 10px 0;

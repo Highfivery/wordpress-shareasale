@@ -41,10 +41,6 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
   </div>
   */
   ?>
-  <div class="plugin__report">
-    <h3><a href=""><?php echo __( 'Traffic Report', 'shareasale' ); ?></a></h3>
-    <p><?php echo __( 'View &amp; download your accounts traffic by merchant.', 'shareasale' ); ?></p>
-  </div>
 </div>
 
 <?php

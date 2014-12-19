@@ -47,12 +47,12 @@ include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 /**
  * Include the caching class.
  */
-require_once( $plugin_root . 'lib/cache-blocks.class.php' );
+require_once( SHAREASALE_ROOT . 'lib/cache-blocks.class.php' );
 
 /**
  * Include the plugin class.
  */
-require_once( $plugin_root . 'lib/wordpress-shareasale.class.php' );
+require_once( SHAREASALE_ROOT . 'lib/wordpress-shareasale.class.php' );
 
 // Initialize the plugin class.
 $wordpress_shareasell = WordPress_ShareASale::get_instance();

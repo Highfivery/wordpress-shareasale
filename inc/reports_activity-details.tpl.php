@@ -33,27 +33,27 @@
                 <option value="<?php echo $i; ?>"<?php if ( $start_year == $i ): ?> selected="selected"<?php endif; ?>><?php echo $i; ?></option>
             <?php endfor; ?>
           </select> &mdash; <select name="end_month">
-            <option value="1"><?php echo __( 'January', 'shareasale' ); ?></option>
-            <option value="2"><?php echo __( 'February', 'shareasale' ); ?></option>
-            <option value="3"><?php echo __( 'March', 'shareasale' ); ?></option>
-            <option value="4"><?php echo __( 'April', 'shareasale' ); ?></option>
-            <option value="5"><?php echo __( 'May', 'shareasale' ); ?></option>
-            <option value="6"><?php echo __( 'June', 'shareasale' ); ?></option>
-            <option value="7"><?php echo __( 'July', 'shareasale' ); ?></option>
-            <option value="8"><?php echo __( 'August', 'shareasale' ); ?></option>
-            <option value="9"><?php echo __( 'September', 'shareasale' ); ?></option>
-            <option value="10"><?php echo __( 'October', 'shareasale' ); ?></option>
-            <option value="11"><?php echo __( 'November', 'shareasale' ); ?></option>
-            <option value="12"><?php echo __( 'December', 'shareasale' ); ?></option>
+            <option value="1"<?php if ( $end_month == '1' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'January', 'shareasale' ); ?></option>
+            <option value="2"<?php if ( $end_month == '2' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'February', 'shareasale' ); ?></option>
+            <option value="3"<?php if ( $end_month == '3' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'March', 'shareasale' ); ?></option>
+            <option value="4"<?php if ( $end_month == '4' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'April', 'shareasale' ); ?></option>
+            <option value="5"<?php if ( $end_month == '5' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'May', 'shareasale' ); ?></option>
+            <option value="6"<?php if ( $end_month == '6' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'June', 'shareasale' ); ?></option>
+            <option value="7"<?php if ( $end_month == '7' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'July', 'shareasale' ); ?></option>
+            <option value="8"<?php if ( $end_month == '8' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'August', 'shareasale' ); ?></option>
+            <option value="9"<?php if ( $end_month == '9' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'September', 'shareasale' ); ?></option>
+            <option value="10"<?php if ( $end_month == '10' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'October', 'shareasale' ); ?></option>
+            <option value="11"<?php if ( $end_month == '11' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'November', 'shareasale' ); ?></option>
+            <option value="12"<?php if ( $end_month == '12' ): ?> selected="selected"<?php endif; ?>><?php echo __( 'December', 'shareasale' ); ?></option>
           </select>
           <select name="end_day">
             <?php for ( $i = 1; $i <= 31; $i++ ): ?>
-                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                <option value="<?php echo $i; ?>"<?php if ( $end_day == $i ): ?> selected="selected"<?php endif; ?>><?php echo $i; ?></option>
             <?php endfor; ?>
           </select>
           <select name="end_year">
             <?php for ( $i = date( 'Y' ); $i >= 2000; $i-- ): ?>
-                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                <option value="<?php echo $i; ?>"<?php if ( $end_year == $i ): ?> selected="selected"<?php endif; ?>><?php echo $i; ?></option>
             <?php endfor; ?>
           </select>
 

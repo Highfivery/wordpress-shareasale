@@ -7,24 +7,22 @@
           <tr>
             <th><?php echo __( 'ID' ); ?></th>
             <th><?php echo __( 'Organization' ); ?></th>
-            <th><?php echo __( 'Website' ); ?></th>
             <th><?php echo __( 'Unique Hits' ); ?></th>
             <th><?php echo __( 'Comissions' ); ?></th>
             <th><?php echo __( 'Net Sales' ); ?></th>
-            <th><?php echo __( 'Number of Voids' ); ?></th>
-            <th><?php echo __( 'Number of Sales' ); ?></th>
+            <th><?php echo __( 'Voids' ); ?></th>
+            <th><?php echo __( 'Sales' ); ?></th>
             <th><?php echo __( 'Conversion' ); ?></th>
             <th><abbr title="Earnings Per Click"><?php echo __( 'EPC' ); ?></abbr></th>
           </tr>
         </thead>
         <tbody>
-          <?php foreach( $traffic as $key => $array ): ?>
+          <?php foreach( $traffic['trafficreportrecord'] as $key => $array ): ?>
           <tr>
             <td><?php echo $array['merchantid']; ?></td>
-            <td><?php echo $array['organization']; ?></td>
-            <td><a href="http://<?php echo $array['website']; ?>" target="_blank"><?php echo $array['website']; ?> <i class="fa fa-external-link"></i></a></td>
+            <td><a href="http://<?php echo $array['website']; ?>" target="_blank"><?php echo $array['organization']; ?> <i class="fa fa-external-link"></i></a></td>
             <td><?php echo $array['uniquehits']; ?></td>
-            <td><?php echo $array['comissions']; ?></td>
+            <td><?php echo $array['commissions']; ?></td>
             <td><?php echo $array['netsales']; ?></td>
             <td><?php echo $array['numberofvoids']; ?></td>
             <td><?php echo $array['numberofsales']; ?></td>
