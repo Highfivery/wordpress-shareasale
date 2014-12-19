@@ -18,8 +18,11 @@ Major features in WordPress ShareASale include:
 
 Reports include:
 
-* **Traffic Report** - View & download your accounts traffic by merchant.
-* **Merchant Status** - View & download your merchants status.
+* **Activity Details**
+* **Activity Summary**
+* **Merchant Status**
+* **Traffic Report**
+* more to come!
 
 **Languages:** English
 

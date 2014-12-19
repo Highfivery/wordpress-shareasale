@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
   </div>
 
   <div class="plugin__report">
-    <h3><a href="<?php echo $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&report=activity_summary'; ?>"><?php echo __( 'Activity Sumary', 'shareasale' ); ?></a></h3>
+    <h3><a href="<?php echo $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&report=activity_summary'; ?>"><?php echo __( 'Activity Summary', 'shareasale' ); ?></a></h3>
     <p><?php echo __( 'View &amp; download your accounts activity summary.', 'shareasale' ); ?></p>
   </div>
 
