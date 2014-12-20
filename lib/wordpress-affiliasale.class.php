@@ -4,7 +4,7 @@
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-class WordPress_ShareASale {
+class WordPress_AffiliASale {
 
     /**
      * Static property to hold our singleton instance.
@@ -33,11 +33,11 @@ class WordPress_ShareASale {
      * }
      */
     private $settings = array(
-        'shareasale_settings' => array(),
+        'affiliasale_settings' => array(),
         'page'                => 'options-general.php',
         'db_version'          => '0.0.1',
         'tabs'                => array(
-            'shareasale_settings' => 'Settings',
+            'affiliasale_settings' => 'Settings',
         ),
     );
 
@@ -71,7 +71,7 @@ class WordPress_ShareASale {
     public function __construct() {
 
         // Change pref page if network activated
-        if ( is_plugin_active_for_network( plugin_basename( SHAREASALE_PLUGIN ) ) ) {
+        if ( is_plugin_active_for_network( plugin_basename( AFFILIASALE_PLUGIN ) ) ) {
             $this->settings['page'] = 'settings.php';
         }
 
@@ -103,23 +103,23 @@ class WordPress_ShareASale {
         );
 
         // Merge and update new changes
-        if ( isset( $_POST['shareasale_settings'] ) ) {
-            $saved_settings =  $_POST['shareasale_settings'];
-            if ( is_plugin_active_for_network( plugin_basename( SHAREASALE_PLUGIN ) ) ) {
-                update_site_option( 'shareasale_settings', $saved_settings );
+        if ( isset( $_POST['affiliasale_settings'] ) ) {
+            $saved_settings =  $_POST['affiliasale_settings'];
+            if ( is_plugin_active_for_network( plugin_basename( AFFILIASALE_PLUGIN ) ) ) {
+                update_site_option( 'affiliasale_settings', $saved_settings );
             } else {
-                update_option( 'shareasale_settings', $saved_settings );
+                update_option( 'affiliasale_settings', $saved_settings );
             }
         }
 
         // Retrieve the settings
-        if ( is_plugin_active_for_network( plugin_basename( SHAREASALE_PLUGIN ) ) ) {
-            $saved_settings = (array) get_site_option( 'shareasale_settings' );
+        if ( is_plugin_active_for_network( plugin_basename( AFFILIASALE_PLUGIN ) ) ) {
+            $saved_settings = (array) get_site_option( 'affiliasale_settings' );
         } else {
-            $saved_settings = (array) get_option( 'shareasale_settings' );
+            $saved_settings = (array) get_option( 'affiliasale_settings' );
         }
 
-        $this->settings['shareasale_settings'] = array_merge(
+        $this->settings['affiliasale_settings'] = array_merge(
             $default_settings,
             $saved_settings
         );
@@ -137,7 +137,7 @@ class WordPress_ShareASale {
      */
     private function _actions() {
     	add_action( 'init', array( &$this, 'init' ) );
-        if ( is_plugin_active_for_network( plugin_basename( SHAREASALE_PLUGIN ) ) ) {
+        if ( is_plugin_active_for_network( plugin_basename( AFFILIASALE_PLUGIN ) ) ) {
             add_action( 'network_admin_menu', array( &$this, 'admin_menu' ) );
             add_action( 'network_admin_edit_shareasale', array( &$this, 'update_network_setting' ) );
         }
@@ -145,6 +145,9 @@ class WordPress_ShareASale {
         add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
         add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ) );
         add_action( 'admin_enqueue_scripts', array( &$this, 'admin_enqueue_scripts' ) );
+
+        add_action( 'woocommerce_product_options_general_product_data', array( &$this, 'woocommerce_product_options_general_product_data' ) );
+		add_action( 'woocommerce_process_product_meta', array( &$this, 'woocommerce_process_product_meta' ) );
     }
 
     /**
@@ -161,12 +164,12 @@ class WordPress_ShareASale {
 	public function init() {
 		// Check is logging spam is enabled, if so add the Spammer Log page.
 		if (
-			isset( $this->settings['shareasale_settings']['affiliate_id'] ) &&
-			$this->settings['shareasale_settings']['affiliate_id'] &&
-			isset( $this->settings['shareasale_settings']['api_token'] ) &&
-			$this->settings['shareasale_settings']['api_token'] &&
-			isset( $this->settings['shareasale_settings']['secret_key'] ) &&
-			$this->settings['shareasale_settings']['secret_key']
+			isset( $this->settings['affiliasale_settings']['affiliate_id'] ) &&
+			$this->settings['affiliasale_settings']['affiliate_id'] &&
+			isset( $this->settings['affiliasale_settings']['api_token'] ) &&
+			$this->settings['affiliasale_settings']['api_token'] &&
+			isset( $this->settings['affiliasale_settings']['secret_key'] ) &&
+			$this->settings['affiliasale_settings']['secret_key']
 		) {
 			$this->settings['tabs']['shareasale_reports'] = 'Reports';
 		}
@@ -184,10 +187,10 @@ class WordPress_ShareASale {
      */
     private function _filters() {
         add_filter( 'plugin_row_meta', array( &$this, 'plugin_row_meta' ), 10, 2 );
-        if ( is_plugin_active_for_network( plugin_basename( SHAREASALE_PLUGIN ) ) ) {
-            add_filter( 'network_admin_plugin_action_links_' . plugin_basename( SHAREASALE_PLUGIN ), array( &$this, 'plugin_action_links' ) );
+        if ( is_plugin_active_for_network( plugin_basename( AFFILIASALE_PLUGIN ) ) ) {
+            add_filter( 'network_admin_plugin_action_links_' . plugin_basename( AFFILIASALE_PLUGIN ), array( &$this, 'plugin_action_links' ) );
         } else {
-            add_filter( 'plugin_action_links_' . plugin_basename( SHAREASALE_PLUGIN ), array( &$this, 'plugin_action_links' ) );
+            add_filter( 'plugin_action_links_' . plugin_basename( AFFILIASALE_PLUGIN ), array( &$this, 'plugin_action_links' ) );
         }
     }
 
@@ -205,22 +208,22 @@ class WordPress_ShareASale {
      */
     public function admin_menu() {
 
-      if ( is_plugin_active_for_network( plugin_basename( SHAREASALE_PLUGIN ) ) ) {
+      if ( is_plugin_active_for_network( plugin_basename( AFFILIASALE_PLUGIN ) ) ) {
           $hook_suffix = add_submenu_page(
               'settings.php',
-              __( 'ShareASale Settings', 'shareasale' ),
-              __( 'ShareASale', 'shareasale' ),
+              __( 'AffiliASale Settings', 'affiliasale' ),
+              __( 'AffiliASale', 'affiliasale' ),
               'manage_network',
-              'shareasale',
+              'affiliasale',
               array( &$this, 'settings_page' )
           );
       } else {
         // Register plugin settings page.
         $hook_suffix = add_options_page(
-            __( 'ShareASale Settings', 'shareasale' ),
-            __( 'ShareASale', 'shareasale' ),
+            __( 'AffiliASale Settings', 'affiliasale' ),
+            __( 'AffiliASale', 'affiliasale' ),
             'manage_options',
-            'shareasale',
+            'affiliasale',
             array( &$this, 'settings_page' )
         );
       }
@@ -244,9 +247,9 @@ class WordPress_ShareASale {
         }
 
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-            wp_enqueue_style( 'shareasale-admin', plugins_url( 'build/css-dev/style.css', SHAREASALE_PLUGIN ) );
+            wp_enqueue_style( 'affiliasale-admin', plugins_url( 'build/css-dev/style.css', AFFILIASALE_PLUGIN ) );
         } else {
-            wp_enqueue_style( 'shareasale-admin', plugins_url( 'build/css/style.css', SHAREASALE_PLUGIN ) );
+            wp_enqueue_style( 'affiliasale-admin', plugins_url( 'build/css/style.css', AFFILIASALE_PLUGIN ) );
         }
     }
 
@@ -273,9 +276,9 @@ class WordPress_ShareASale {
 
         if ( 1 != $page ) {
             if ( 2 != $page ) {
-                $pre_html = '<li><a href="' . $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&p=1"><i class="fa fa-angle-double-left"></i></a>';
+                $pre_html = '<li><a href="' . $this->_admin_url() . '?page=affiliasale&tab=' . $tab . '&p=1"><i class="fa fa-angle-double-left"></i></a>';
             }
-            $pre_html .= '<li><a href="' . $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&p=' . ( $page - 1 ) . '"><i class="fa fa-angle-left"></i></a>';
+            $pre_html .= '<li><a href="' . $this->_admin_url() . '?page=affiliasale&tab=' . $tab . '&p=' . ( $page - 1 ) . '"><i class="fa fa-angle-left"></i></a>';
         }
 
         echo '<ul class="plugin__pager">';
@@ -289,9 +292,9 @@ class WordPress_ShareASale {
             }
 
             if ( $num_pages != $page ) {
-                $post_html = '<li><a href="' . $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&p=' . ( $page + 1 ) . '"><i class="fa fa-angle-right"></i></a>';
+                $post_html = '<li><a href="' . $this->_admin_url() . '?page=affiliasale&tab=' . $tab . '&p=' . ( $page + 1 ) . '"><i class="fa fa-angle-right"></i></a>';
                 if ( ( $page + 1 ) != $num_pages ) {
-                    $post_html .= '<li><a href="' . $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&p=1"><i class="fa fa-angle-double-right"></i></a>';
+                    $post_html .= '<li><a href="' . $this->_admin_url() . '?page=affiliasale&tab=' . $tab . '&p=1"><i class="fa fa-angle-double-right"></i></a>';
                 }
             }
 
@@ -299,7 +302,7 @@ class WordPress_ShareASale {
             if ( $page == $i ) {
                 $class = ' class="plugin__page-selected"';
             }
-            echo '<li><a href="' . $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&p=' . $i . '"' . $class . '>' . $i . '</a>';
+            echo '<li><a href="' . $this->_admin_url() . '?page=affiliasale&tab=' . $tab . '&p=' . $i . '"' . $class . '>' . $i . '</a>';
         }
 
         if( isset( $post_html ) ) {
@@ -308,8 +311,8 @@ class WordPress_ShareASale {
         echo '</ul>';
         ?>
         <div class="plugin__page-info">
-            <?php echo __( 'Page ', 'shareasale' ) . number_format( $page, 0 ) . ' of ' . number_format( $num_pages, 0 ); ?>
-            (<?php echo number_format( $total_num, 0 ) . __( ' total records found', 'shareasale' ); ?>)
+            <?php echo __( 'Page ', 'affiliasale' ) . number_format( $page, 0 ) . ' of ' . number_format( $num_pages, 0 ); ?>
+            (<?php echo number_format( $total_num, 0 ) . __( ' total records found', 'affiliasale' ); ?>)
         </div>
         <?php
     }
@@ -347,7 +350,7 @@ class WordPress_ShareASale {
      * @link http://codex.wordpress.org/Plugin_API/Filter_Reference/plugin_action_links_(plugin_file_name)
      */
     public function plugin_action_links( $links ) {
-        $link = array( '<a href="' . $this->_admin_url() . '?page=shareasale">' . __( 'Settings', 'shareasale' ) . '</a>' );
+        $link = array( '<a href="' . $this->_admin_url() . '?page=affiliasale">' . __( 'Settings', 'affiliasale' ) . '</a>' );
 
         return array_merge( $links, $link );
     }
@@ -362,8 +365,8 @@ class WordPress_ShareASale {
      * @link http://codex.wordpress.org/Plugin_API/Filter_Reference/preprocess_comment
      */
     public function plugin_row_meta( $links, $file ) {
-        if ( false !== strpos( $file, 'shareasale.php' ) ) {
-          $links = array_merge( $links, array( '<a href="http://www.benmarshall.me/shareasale-plugin/">ShareASale</a>' ) );
+        if ( false !== strpos( $file, 'wordpress-affiliasale.php' ) ) {
+          $links = array_merge( $links, array( '<a href="https://github.com/bmarshall511/wordpress-shareasale">Fork on GitHub</a>' ) );
           $links = array_merge( $links, array( '<a href="https://www.gittip.com/bmarshall511/">Donate</a>' ) );
         }
 
@@ -379,15 +382,16 @@ class WordPress_ShareASale {
      * @access private
      */
     private function _register_settings() {
-        register_setting( 'shareasale_settings', 'shareasale_settings' );
+        register_setting( 'affiliasale_settings', 'affiliasale_settings' );
 
-        add_settings_section( 'section_general', __( 'General Settings', 'shareasale' ), false, 'shareasale_settings' );
+        add_settings_section( 'section_general', __( 'General Settings', 'affiliasale' ), false, 'affiliasale_settings' );
+        add_settings_section( 'section_caching', __( 'API Cache Settings', 'affiliasale' ), false, 'affiliasale_settings' );
 
-        add_settings_field( 'affiliate_id', __( 'Affiliate ID', 'shareasale' ), array( &$this, 'field_affiliate_id' ), 'shareasale_settings', 'section_general' );
-        add_settings_field( 'api_token', __( 'API Token', 'shareasale' ), array( &$this, 'field_api_token' ), 'shareasale_settings', 'section_general' );
-        add_settings_field( 'secret_key', __( 'Secret Key', 'shareasale' ), array( &$this, 'field_secret_key' ), 'shareasale_settings', 'section_general' );
-        add_settings_field( 'caching', __( 'Caching', 'shareasale' ), array( &$this, 'field_caching' ), 'shareasale_settings', 'section_general' );
-        add_settings_field( 'cache_time', __( 'Cache Time', 'shareasale' ), array( &$this, 'field_cache_time' ), 'shareasale_settings', 'section_general' );
+        add_settings_field( 'affiliate_id', __( 'Affiliate ID', 'affiliasale' ), array( &$this, 'field_affiliate_id' ), 'affiliasale_settings', 'section_general' );
+        add_settings_field( 'api_token', __( 'API Token', 'affiliasale' ), array( &$this, 'field_api_token' ), 'affiliasale_settings', 'section_general' );
+        add_settings_field( 'secret_key', __( 'Secret Key', 'affiliasale' ), array( &$this, 'field_secret_key' ), 'affiliasale_settings', 'section_general' );
+        add_settings_field( 'caching', __( 'Caching', 'affiliasale' ), array( &$this, 'field_caching' ), 'affiliasale_settings', 'section_caching' );
+        add_settings_field( 'cache_time', __( 'Cache Time', 'affiliasale' ), array( &$this, 'field_cache_time' ), 'affiliasale_settings', 'section_caching' );
     }
 
     /**
@@ -400,8 +404,8 @@ class WordPress_ShareASale {
     public function field_cache_time() {
         ?>
         <label for="affiliate_id">
-            <input type="number" class="regular-text" name="shareasale_settings[cache_time]" value="<?php echo esc_attr( $this->settings['shareasale_settings']['cache_time'] ); ?>">
-        <p class="description"><?php echo __( 'Enter the number of seconds to cache ShareASale API data.', 'shareasale' ); ?></p>
+            <input type="number" class="regular-text" name="affiliasale_settings[cache_time]" value="<?php echo esc_attr( $this->settings['affiliasale_settings']['cache_time'] ); ?>">
+        <p class="description"><?php echo __( 'Enter the number of seconds to cache ShareASale API data.', 'affiliasale' ); ?></p>
         </label>
         <?php
     }
@@ -414,15 +418,15 @@ class WordPress_ShareASale {
      * @since 1.0.0
      */
     public function field_caching() {
-        if ( ! isset( $this->settings['shareasale_settings']['caching'] ) ) {
-            $this->settings['shareasale_settings']['caching'] = '0';
+        if ( ! isset( $this->settings['affiliasale_settings']['caching'] ) ) {
+            $this->settings['affiliasale_settings']['caching'] = '0';
         }
         ?>
         <label for="caching">
-            <input type="checkbox" id="caching" name="shareasale_settings[caching]" value="1" <?php if ( isset( $this->settings['shareasale_settings']['caching']) ): checked( $this->settings['shareasale_settings']['caching'] ); endif; ?> /> <?php echo __( 'API Caching', 'shareasale' ); ?>
+            <input type="checkbox" id="caching" name="affiliasale_settings[caching]" value="1" <?php if ( isset( $this->settings['affiliasale_settings']['caching']) ): checked( $this->settings['affiliasale_settings']['caching'] ); endif; ?> /> <?php echo __( 'API Caching', 'affiliasale' ); ?>
         </label>
 
-        <p class="description"><?php echo __( 'API report requests are limited to 200 per month. <b>It\'s highly recommended caching be enabled to avoid overage limits.</b>', 'shareasale' ); ?></p>
+        <p class="description"><?php echo __( 'API report requests are limited to 200 per month. <b>It\'s highly recommended caching be enabled to avoid overage limits.</b>', 'affiliasale' ); ?></p>
         <?php
     }
 
@@ -436,8 +440,8 @@ class WordPress_ShareASale {
     public function field_affiliate_id() {
         ?>
         <label for="affiliate_id">
-            <input type="text" class="regular-text" name="shareasale_settings[affiliate_id]" value="<?php echo esc_attr( $this->settings['shareasale_settings']['affiliate_id'] ); ?>">
-        <p class="description"><?php echo __( 'Enter your ShareASale affiliate ID.', 'shareasale' ); ?></p>
+            <input type="text" class="regular-text" name="affiliasale_settings[affiliate_id]" value="<?php echo esc_attr( $this->settings['affiliasale_settings']['affiliate_id'] ); ?>">
+        <p class="description"><?php echo __( 'Enter your ShareASale affiliate ID.', 'affiliasale' ); ?></p>
         </label>
         <?php
     }
@@ -452,8 +456,8 @@ class WordPress_ShareASale {
     public function field_api_token() {
         ?>
         <label for="api_token">
-          <input type="text" class="regular-text" name="shareasale_settings[api_token]" value="<?php echo esc_attr( $this->settings['shareasale_settings']['api_token'] ); ?>">
-        <p class="description"><?php echo __( 'Enter your ShareASale API token.', 'shareasale' ); ?></p>
+          <input type="text" class="regular-text" name="affiliasale_settings[api_token]" value="<?php echo esc_attr( $this->settings['affiliasale_settings']['api_token'] ); ?>">
+        <p class="description"><?php echo __( 'Enter your ShareASale API token.', 'affiliasale' ); ?></p>
         </label>
         <?php
     }
@@ -468,8 +472,8 @@ class WordPress_ShareASale {
     public function field_secret_key() {
       ?>
       <label for="secret_key">
-        <input type="text" class="regular-text" name="shareasale_settings[secret_key]" value="<?php echo esc_attr( $this->settings['shareasale_settings']['secret_key'] ); ?>">
-      <p class="description"><?php echo __( 'Enter your ShareASale secret key.', 'shareasale' ); ?></p>
+        <input type="text" class="regular-text" name="affiliasale_settings[secret_key]" value="<?php echo esc_attr( $this->settings['affiliasale_settings']['secret_key'] ); ?>">
+      <p class="description"><?php echo __( 'Enter your ShareASale secret key.', 'affiliasale' ); ?></p>
       </label>
       <?php
     }
@@ -484,11 +488,11 @@ class WordPress_ShareASale {
    * @access private
    */
   private function _options_tabs() {
-    $current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
+    $current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'affiliasale_settings';
     echo '<h2 class="nav-tab-wrapper">';
     foreach ( $this->settings['tabs'] as $key => $name ) {
       $active = $current_tab == $key ? 'nav-tab-active' : '';
-      echo '<a class="nav-tab ' . $active . '" href="?page=shareasale&tab=' . $key . '">' . $name . '</a>';
+      echo '<a class="nav-tab ' . $active . '" href="?page=affiliasale&tab=' . $key . '">' . $name . '</a>';
     }
     echo '</h2>';
   }
@@ -504,19 +508,18 @@ class WordPress_ShareASale {
    */
   public function wp_enqueue_scripts() {
     if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-      wp_register_script( 'shareasale', plugins_url( '/build/js-dev/shareasale.js' , SHAREASALE_PLUGIN ), array( 'jquery' ), '1.1.0', true );
+      wp_register_script( 'affiliasale', plugins_url( '/build/js-dev/shareasale.js' , AFFILIASALE_PLUGIN ), array( 'jquery' ), '1.1.0', true );
     } else {
-      wp_register_script( 'shareasale', plugins_url( '/build/js/shareasale.min.js' , SHAREASALE_PLUGIN ), array( 'jquery' ), '1.1.0', true );
+      wp_register_script( 'affiliasale', plugins_url( '/build/js/shareasale.min.js' , AFFILIASALE_PLUGIN ), array( 'jquery' ), '1.1.0', true );
     }
-    //wp_localize_script( 'shareasale', 'shareasale', array( 'key' => $this->_get_key() ) );
-    wp_enqueue_script( 'shareasale' );
+    wp_enqueue_script( 'affiliasale' );
   }
 
 
   /**
    * Add admin scripts.
    *
-   * Adds the CSS & JS for the ShareASale settings page.
+   * Adds the CSS & JS for the AffiliASale settings page.
    *
    * @since 1.5.2
    *
@@ -526,33 +529,33 @@ class WordPress_ShareASale {
    * @return void
    */
   public function admin_enqueue_scripts( $hook ) {
-    if ( 'settings_page_shareasale' != $hook ) {
+    if ( 'settings_page_affiliasale' != $hook ) {
           return;
       }
 
       // Create nonce for AJAX requests.
-      $ajax_nonce = wp_create_nonce( 'shareasale' );
+      $ajax_nonce = wp_create_nonce( 'affiliasale' );
 
-      // Register the ShareASale admin script.
+      // Register the AffiliASale admin script.
       if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
         wp_register_script(
-          'shareasale-admin', plugin_dir_url( SHAREASALE_PLUGIN ) .
-          'build/js-dev/shareasale-admin.js'
+          'affiliasale-admin', plugin_dir_url( AFFILIASALE_PLUGIN ) .
+          'build/js-dev/affiliasale-admin.js'
         );
       } else {
         wp_register_script(
-          'shareasale-admin',
-          plugin_dir_url( SHAREASALE_PLUGIN ) .
-          'build/js/shareasale-admin.min.js'
+          'affiliasale-admin',
+          plugin_dir_url( AFFILIASALE_PLUGIN ) .
+          'build/js/affiliasale-admin.min.js'
         );
       }
 
       // Localize the script with the plugin data.
       $plugin_array = array( 'nonce' => $ajax_nonce );
-      wp_localize_script( 'shareasale-admin', 'shareasale_admin', $plugin_array );
+      wp_localize_script( 'affiliasale-admin', 'affiliasale_admin', $plugin_array );
 
     // Enqueue the script.
-    wp_enqueue_script( 'shareasale-admin' );
+    wp_enqueue_script( 'affiliasale-admin' );
   }
 
   /**
@@ -583,7 +586,7 @@ class WordPress_ShareASale {
     update_site_option( 'settings', $_POST['settings'] );
     wp_redirect( add_query_arg(
       array(
-        'page'    => 'shareasale',
+        'page'    => 'affiliasale',
         'updated' => 'true',
         ),
       network_admin_url( 'settings.php' )
@@ -600,7 +603,7 @@ class WordPress_ShareASale {
    */
   private function _admin_url()
   {
-    if ( is_plugin_active_for_network( plugin_basename( SHAREASALE_PLUGIN ) ) ) {
+    if ( is_plugin_active_for_network( plugin_basename( AFFILIASALE_PLUGIN ) ) ) {
       $settings_url = network_admin_url( $this->settings['page'] );
     } else if ( home_url() != site_url() ) {
       $settings_url = home_url( '/wp-admin/' . $this->settings['page'] );
@@ -638,23 +641,26 @@ class WordPress_ShareASale {
    */
   public function settings_page()
   {
-    $plugin = get_plugin_data( SHAREASALE_PLUGIN );
-    $tab    = isset( $_GET['tab'] ) ? $_GET['tab'] : 'shareasale_settings';
+    $plugin = get_plugin_data( AFFILIASALE_PLUGIN );
+    $tab    = isset( $_GET['tab'] ) ? $_GET['tab'] : 'affiliasale_settings';
     $page   = isset( $_GET['p'] ) ? $_GET['p'] : 1;
-    $action = is_plugin_active_for_network( plugin_basename( SHAREASALE_PLUGIN ) ) ? 'edit.php?action=shareasale' : 'options.php';
+    $action = is_plugin_active_for_network( plugin_basename( AFFILIASALE_PLUGIN ) ) ? 'edit.php?action=affiliasale' : 'options.php';
     ?>
     <div class="wrap">
-      <h2><?php echo __( 'ShareASale', 'shareasale' ); ?></h2>
+      <h2><?php echo __( $plugin['Name'], 'sas' ); ?> <?php echo __( 'for <a href="http://www.shareasale.com/r.cfm?b=69&u=884776&m=47&urllink=&afftrack=" target="_blank">ShareSale</a>', 'affiliasale' ); ?></h2>
       <?php $this->_options_tabs(); ?>
       <div class="plugin__row">
         <div class="plugin__right">
-        <?php require_once( SHAREASALE_ROOT . 'inc/admin-sidebar.tpl.php' ); ?>
+        <?php require_once( AFFILIASALE_ROOT . 'inc/admin-sidebar.tpl.php' ); ?>
         </div>
         <div class="plugin__left">
+        	<div class="plugin__ad">
+		  		<a target="_blank" href="http://www.shareasale.com/r.cfm?b=232146&amp;u=884776&amp;m=47&amp;urllink=&amp;afftrack="><img src="https://i.shareasale.com/image/47/160x600.gif"></a>
+		  	</div>
         <?php
         switch ( $tab ) {
-          case 'shareasale_settings':
-            require_once( SHAREASALE_ROOT . 'inc/settings.tpl.php' );
+          case 'affiliasale_settings':
+            require_once( AFFILIASALE_ROOT . 'inc/settings.tpl.php' );
           break;
           case 'shareasale_reports':
             $token_count = $this->shareasale_api( array( 'action' => 'apitokencount' ) );
@@ -662,11 +668,11 @@ class WordPress_ShareASale {
             if ( isset( $token_count['error'] ) ) {
             	?>
             	<div class="plugin__msg plugin__msg--error">
-            		<b><?php echo __( 'API Error:', 'shareasale' ); ?> <?php echo $token_count['error']; ?></b>
+            		<b><?php echo __( 'API Error:', 'affiliasale' ); ?> <?php echo $token_count['error']; ?></b>
             	</div>
             	<?
             } else {
-            	require_once( SHAREASALE_ROOT . 'inc/reports.tpl.php' );
+            	require_once( AFFILIASALE_ROOT . 'inc/reports.tpl.php' );
             }
           break;
         }
@@ -689,8 +695,8 @@ class WordPress_ShareASale {
   public function shareasale_api( $args ) {
 
     $result         = false;
-    $affiliate_id   = $this->settings['shareasale_settings']['affiliate_id'];
-    $api_token      = $this->settings['shareasale_settings']['api_token'];
+    $affiliate_id   = $this->settings['affiliasale_settings']['affiliate_id'];
+    $api_token      = $this->settings['affiliasale_settings']['api_token'];
     $api_version    = 1.8;
     $action         = isset( $args['action'] ) ? $args['action'] : 'traffic';
     $url            = "https://shareasale.com/x.cfm?affiliateId=$affiliate_id&token=$api_token&version=$api_version&action=$action&XMLFormat=1";
@@ -714,10 +720,10 @@ class WordPress_ShareASale {
       break;
     }
 
-    $cache = new CacheBlocks( SHAREASALE_ROOT . '/cache/', $this->settings['shareasale_settings']['cache_time'] );
+    $cache = new CacheBlocks( AFFILIASALE_ROOT . '/cache/', $this->settings['affiliasale_settings']['cache_time'] );
     if( ! $result = $cache->Load( $cache_string ) ) {
 
-        $api_secret_key = $this->settings['shareasale_settings']['secret_key'];
+        $api_secret_key = $this->settings['affiliasale_settings']['secret_key'];
         $timestamp      = gmdate( DATE_RFC1123 );
         $signature      = $api_token . ':' . $timestamp . ':' . $action . ':' . $api_secret_key;
         $signature_hash = hash( 'sha256', $signature );
@@ -756,4 +762,48 @@ class WordPress_ShareASale {
 
     return $result;
   }
+
+	/**
+	 * Add general product fields.
+	 *
+	 * @since 1.0.0
+	 */
+	public function woocommerce_product_options_general_product_data() {
+		global $woocommerce, $post;
+
+		$options         = array( '' => __( 'N/A', 'affiliasale' ) );
+		$merchant_status = $this->shareasale_api( array( 'action' => 'merchantStatus' ) );
+
+		if ( isset( $merchant_status['merchantstatusreportrecord'] ) ) {
+			foreach( $merchant_status['merchantstatusreportrecord'] as $key => $array ) {
+				if ( 'Yes' == $array['approved'] ) {
+					$options[ $array['merchantid'] ] = __( $array['merchant'], 'affiliasale' );
+				}
+			}
+		}
+
+		echo '<div class="options_group">';
+		woocommerce_wp_select(
+		array(
+			'id'      => '_shareasale_merchant',
+			'label'   => __( 'ShareASale Merchant', 'affiliasale' ),
+			'options' => $options
+			)
+		);
+		echo '<span class="description">' . __( 'Merchant data is provided by the ShareASale API.', 'affiliasale' ) . '</span>';
+	  	echo '</div>';
+	}
+
+	/**
+	 * Process product meta.
+	 *
+	 * @since 1.0.0
+	 */
+	public function woocommerce_process_product_meta( $post_id ){
+
+		// Merchant
+		$merchant = $_POST['_shareasale_merchant'];
+		if( !empty( $merchant ) )
+			update_post_meta( $post_id, '_shareasale_merchant', esc_attr( $merchant ) );
+	}
 }

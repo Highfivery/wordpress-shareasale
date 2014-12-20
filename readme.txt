@@ -1,20 +1,21 @@
-=== WordPress ShareASale ===
+=== WordPress AffiliASale ===
 Contributors: bmarshall511
 Donate link: https://www.gittip.com/bmarshall511/
 Tags: shareasale
 Requires at least: 3.0.0
-Tested up to: 4.0.1
+Tested up to: 4.1.0
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WordPress ShareASale plugin integrates with the ShareASale API to generate detailed reports you can view and download from your WordPress site.
+WordPress AffiliAsale integrates with the <a href="http://www.shareasale.com/r.cfm?b=69&u=884776&m=47&urllink=&afftrack=" target="_blank">ShareASale Affiliate Program</a> to generate detailed reports for your account that you can view and download from your WordPress site.
 
 == Description ==
 
-Major features in WordPress ShareASale include:
+Major features in WordPress AffiliASale include:
 
 * **View & download detailed reports**, using the ShareASale API
+* **WooCommerce support** for ShareASale products
 
 Reports include:
 

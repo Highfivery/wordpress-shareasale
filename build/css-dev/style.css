@@ -2856,7 +2856,7 @@
 /* line 163, ../../src/scss/style.scss */
 .plugin__button {
   display: inline-block;
-  background: black;
+  background: #2d2d2e;
   color: #fff !important;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -2892,7 +2892,7 @@
 
 /* line 195, ../../src/scss/style.scss */
 .plugin__bg--secondary {
-  background: black;
+  background: #2d2d2e;
   color: #fff;
 }
 
@@ -3093,4 +3093,10 @@
 .plugin__filter {
   border-bottom: 3px solid #f0f0f0;
   padding-bottom: 10px;
+}
+
+/* line 382, ../../src/scss/style.scss */
+.plugin__ad {
+  float: right;
+  margin: 20px 0 0 21px;
 }

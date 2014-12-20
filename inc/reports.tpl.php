@@ -14,22 +14,22 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
   <div class="plugin__msg plugin__msg--notice"><?php echo __( 'Note: API report requests are limited to 200 per month. <b>You have ' . number_format( $token_count['creditsRemaining'], 0 ) . ' request credit(s) remaining this month.</b> Your available request credits will reset each month.', 'shareasale' ); ?></div>
 
   <div class="plugin__report">
-    <h3><a href="<?php echo $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&report=activity_details'; ?>"><?php echo __( 'Activity Details', 'shareasale' ); ?></a></h3>
+    <h3><a href="<?php echo $this->_admin_url() . '?page=affiliasale&tab=' . $tab . '&report=activity_details'; ?>"><?php echo __( 'Activity Details', 'shareasale' ); ?></a></h3>
     <p><?php echo __( 'View &amp; download your accounts activity details.', 'shareasale' ); ?></p>
   </div>
 
   <div class="plugin__report">
-    <h3><a href="<?php echo $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&report=activity_summary'; ?>"><?php echo __( 'Activity Summary', 'shareasale' ); ?></a></h3>
+    <h3><a href="<?php echo $this->_admin_url() . '?page=affiliasale&tab=' . $tab . '&report=activity_summary'; ?>"><?php echo __( 'Activity Summary', 'shareasale' ); ?></a></h3>
     <p><?php echo __( 'View &amp; download your accounts activity summary.', 'shareasale' ); ?></p>
   </div>
 
   <div class="plugin__report">
-    <h3><a href="<?php echo $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&report=merchant_status'; ?>"><?php echo __( 'Merchant Status', 'shareasale' ); ?></a></h3>
+    <h3><a href="<?php echo $this->_admin_url() . '?page=affiliasale&tab=' . $tab . '&report=merchant_status'; ?>"><?php echo __( 'Merchant Status', 'shareasale' ); ?></a></h3>
     <p><?php echo __( 'View &amp; download your merchants\' status.', 'shareasale' ); ?></p>
   </div>
 
   <div class="plugin__report">
-    <h3><a href="<?php echo $this->_admin_url() . '?page=shareasale&tab=' . $tab . '&report=traffic'; ?>"><?php echo __( 'Traffic Report', 'shareasale' ); ?></a></h3>
+    <h3><a href="<?php echo $this->_admin_url() . '?page=affiliasale&tab=' . $tab . '&report=traffic'; ?>"><?php echo __( 'Traffic Report', 'shareasale' ); ?></a></h3>
     <p><?php echo __( 'View &amp; download your accounts traffic by merchant.', 'shareasale' ); ?></p>
   </div>
   <?php
@@ -63,35 +63,35 @@ if ( isset( $_REQUEST['report'] ) ):
           'date_start' => date( 'm/d/Y', strtotime( $start_date )),
           'date_end' => date( 'm/d/Y', strtotime( $end_date )),
         ) );
-        require_once( SHAREASALE_ROOT . 'inc/reports_activity-details.tpl.php' );
+        require_once( AFFILIASALE_ROOT . 'inc/reports_activity-details.tpl.php' );
       break;
 
       case 'activity_summary':
         $activity_summary = $this->shareasale_api( array( 'action' => 'activitySummary' ) );
-        require_once( SHAREASALE_ROOT . 'inc/reports_activity-summary.tpl.php' );
+        require_once( AFFILIASALE_ROOT . 'inc/reports_activity-summary.tpl.php' );
       break;
 
       case 'traffic':
         $traffic = $this->shareasale_api( array( 'action' => 'traffic' ) );
-        require_once( SHAREASALE_ROOT . 'inc/reports_traffic.tpl.php' );
+        require_once( AFFILIASALE_ROOT . 'inc/reports_traffic.tpl.php' );
       break;
       /*
       @todo - Cant't seem to get this one to work.
       case 'payment_summary':
         $payment_summary = $this->shareasale_api( array( 'action' => 'paymentSummary' ) );
-        require_once( SHAREASALE_ROOT . 'inc/reports_payment-summary.tpl.php' );
+        require_once( AFFILIASALE_ROOT . 'inc/reports_payment-summary.tpl.php' );
       break;
       */
       case 'merchant_status':
         $merchant_status = $this->shareasale_api( array( 'action' => 'merchantStatus' ) );
-        require_once( SHAREASALE_ROOT . 'inc/reports_merchant-status.tpl.php' );
+        require_once( AFFILIASALE_ROOT . 'inc/reports_merchant-status.tpl.php' );
       break;
       default:
         $merchant_status = $this->shareasale_api( array( 'action' => 'merchantStatus' ) );
-        require_once( SHAREASALE_ROOT . 'inc/reports_merchant-status.tpl.php' );
+        require_once( AFFILIASALE_ROOT . 'inc/reports_merchant-status.tpl.php' );
     endswitch;
 else:
   $merchant_status = $this->shareasale_api( array( 'action' => 'merchantStatus' ) );
-  require_once( SHAREASALE_ROOT . 'inc/reports_merchant-status.tpl.php' );
+  require_once( AFFILIASALE_ROOT . 'inc/reports_merchant-status.tpl.php' );
 endif;
 ?>

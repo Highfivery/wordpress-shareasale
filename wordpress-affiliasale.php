@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: WordPress ShareASale
+ * Plugin Name: WordPress AffiliASale
  * Plugin URI: http://www.benmarshall.me/wordpress-shareasale-plugin
- * Description: The WordPress ShareASale plugin integrates with the ShareASale API to generate detailed reports you can view and download from your WordPress site.
+ * Description: The WordPress AffiliASale plugin integrates with <a href="http://www.shareasale.com/r.cfm?b=69&u=884776&m=47&urllink=&afftrack=" target="_blank">ShareASale</a> to generate detailed reports you can view and download from your WordPress site. <strong>Includes WooCommerce support too!</strong>
  * Version: 1.0.0
  * Author: Ben Marshall
  * Author URI: http://www.benmarshall.me
@@ -31,12 +31,12 @@
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 // Define constants.
-if( ! defined( 'SHAREASALE_ROOT' ) ) {
-  define( 'SHAREASALE_ROOT', plugin_dir_path( __FILE__ ) );
+if( ! defined( 'AFFILIASALE_ROOT' ) ) {
+  define( 'AFFILIASALE_ROOT', plugin_dir_path( __FILE__ ) );
 }
 
-if( ! defined( 'SHAREASALE_PLUGIN' ) ) {
-  define( 'SHAREASALE_PLUGIN', __FILE__ );
+if( ! defined( 'AFFILIASALE_PLUGIN' ) ) {
+  define( 'AFFILIASALE_PLUGIN', __FILE__ );
 }
 
 /**
@@ -47,14 +47,14 @@ include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 /**
  * Include the caching class.
  */
-require_once( SHAREASALE_ROOT . 'lib/cache-blocks.class.php' );
+require_once( AFFILIASALE_ROOT . 'lib/cache-blocks.class.php' );
 
 /**
  * Include the plugin class.
  */
-require_once( SHAREASALE_ROOT . 'lib/wordpress-shareasale.class.php' );
+require_once( AFFILIASALE_ROOT . 'lib/wordpress-affiliasale.class.php' );
 
 // Initialize the plugin class.
-$wordpress_shareasell = WordPress_ShareASale::get_instance();
+$wordpress_affiliasale = WordPress_AffiliASale::get_instance();
 
 

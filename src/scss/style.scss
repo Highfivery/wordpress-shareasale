@@ -11,7 +11,7 @@
 // Variables
 
 $primary-color: #0064A3;
-$secondary-color: #000;
+$secondary-color: #2d2d2e;
 $trinary-color: #fddb5a;
 $black: #1b1e24;
 $border-color: #e8edf1;
@@ -377,4 +377,9 @@ $border-color: #e8edf1;
 .plugin__filter {
   border-bottom: 3px solid #f0f0f0;
   padding-bottom: 10px;
+}
+
+.plugin__ad {
+	float: right;
+	margin: 20px 0 0 21px;
 }
