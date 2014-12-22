@@ -8,7 +8,7 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WordPress AffiliAsale integrates with the <a href="http://goo.gl/AaDKeC" target="_blank">ShareASale Affiliate Program</a> to generate detailed reports for your account that you can view and download from your WordPress site.
+WordPress AffiliAsale integrates with the **ShareASale Affiliate** Program to generate detailed reports for your account that you can view and download from your WordPress site.
 
 == Description ==
 
