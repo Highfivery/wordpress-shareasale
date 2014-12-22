@@ -36,6 +36,11 @@ If you have suggestions for a new add-on, feel free to email me at me@benmarshal
 
 == Frequently Asked Questions ==
 
+= I'm getting '<em>API Error: Invalid Account - Error Code 4002 - xxx.xxx.xxx</em>' =
+
+If you're seeing this error it's because you need to authorize your IP address with ShareASale's API, see <a href="https://www.shareasale.com/a-apiManager.cfm" target="_blank">https://www.shareasale.com/a-apiManager.cfm</a>.
+
+
 == Screenshots ==
 
 == Changelog ==
