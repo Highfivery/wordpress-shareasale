@@ -8,9 +8,13 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WordPress AffiliAsale integrates with the **ShareASale Affiliate** Program to generate detailed reports for your account that you can view and download from your WordPress site.
+Quit wasting time logging into ShareASale, get reports & advanced integration with AffiliASale.
 
 == Description ==
+
+**Do you hate wasting time logging into your ShareASale affiliate account? Let <a href="http://www.benmarshall.me/wordpress-shareasale">WordPress AffiliASale</a> save you time by accessing your account data from your WordPress site.**
+
+WordPress AffiliAsale integrates with the <a href="http://www.benmarshall.me/shareasale-redirect" target="_blank">ShareASale Affiliate Program</a> to generate detailed reports for your account that you can view and download from your WordPress site.
 
 Major features in WordPress AffiliASale include:
 
@@ -23,7 +27,7 @@ Reports include:
 * **Activity Summary**
 * **Merchant Status**
 * **Traffic Report**
-* more to come!
+* **more to come!**
 
 **Languages:** English
 
@@ -36,7 +40,7 @@ If you have suggestions for a new add-on, feel free to email me at me@benmarshal
 
 == Frequently Asked Questions ==
 
-= I'm getting '<em>API Error: Invalid Account - Error Code 4002 - xxx.xxx.xxx</em>' =
+= I'm getting '<em>API Error: Invalid Account - Error Code 4002 - xxx.xxx.xxx</em>'. =
 
 If you're seeing this error it's because you need to authorize your IP address with ShareASale's API, see <a href="https://www.shareasale.com/a-apiManager.cfm" target="_blank">https://www.shareasale.com/a-apiManager.cfm</a>.
 
