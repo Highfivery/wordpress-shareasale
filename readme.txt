@@ -12,21 +12,18 @@ Quit wasting time logging into ShareASale, get reports & advanced integration wi
 
 == Description ==
 
-**Do you hate wasting time logging into your ShareASale affiliate account? Let <a href="http://www.benmarshall.me/wordpress-shareasale">WordPress AffiliASale</a> save you time by accessing your account data from your WordPress site.**
+**Hate wasting time logging into your ShareASale affiliate account? Let <a href="http://www.benmarshall.me/wordpress-shareasale">WordPress AffiliASale</a> save you time by accessing your account data from your WordPress site.**
 
-WordPress AffiliAsale integrates with the <a href="http://www.benmarshall.me/shareasale-redirect" target="_blank">ShareASale Affiliate Program</a> to generate detailed reports for your account that you can view and download from your WordPress site.
+WordPress AffiliAsale integrates with the <a href="http://www.benmarshall.me/shareasale-redirect" target="_blank">ShareASale Affiliate Program</a> to generate detailed reports and enhanced features for your WordPress site.
 
 Major features in WordPress AffiliASale include:
 
 * **View & download detailed reports**, using the ShareASale API
+* **API Caching** for better performance
+* **Activity Details Report**
+* **Activity Summary Report**
+* **Merchant Status Report**
 * **WooCommerce support** for ShareASale products
-
-Reports include:
-
-* **Activity Details**
-* **Activity Summary**
-* **Merchant Status**
-* **Traffic Report**
 * **more to come!**
 
 **Languages:** English
@@ -37,6 +34,7 @@ If you have suggestions for a new add-on, feel free to email me at me@benmarshal
 
 1. Upload the `shareasale` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Visit the plugin settings page (Settings > AffiliASale) and enter your API credentials
 
 == Frequently Asked Questions ==
 
